@@ -231,11 +231,11 @@ internal struct MonospacedDigitModifier: ViewModifier, Record {
 }
 
 internal struct TintModifier: ViewModifier, Record {
-  @Field var color: Color?
+  @Field var style: ShapeStyleValue?
 
   func body(content: Content) -> some View {
-    if let color = color {
-      content.tint(color)
+    if let shapeStyle = style?.toAnyShapeStyle() {
+      content.tint(shapeStyle)
     } else {
       content
     }
@@ -384,11 +384,13 @@ internal struct GrayscaleModifier: ViewModifier, Record {
 }
 
 internal struct BorderModifier: ViewModifier, Record {
-  @Field var color: Color = .white
+  // Named `style` here because `content` would be shadowed by the parameter of `body(content:)`.
+  @Field("content") var style: ShapeStyleValue?
   @Field var width: CGFloat = 1.0
 
   func body(content: Content) -> some View {
-    content.border(color, width: width)
+    // Falls back to the white the modifier used before it took a shape style.
+    content.border(style?.toAnyShapeStyle() ?? AnyShapeStyle(Color.white), width: width)
   }
 }
 
@@ -418,7 +420,7 @@ internal struct ClipShapeModifier: ViewModifier, Record {
 }
 
 internal struct StrokeBorderModifier: ViewModifier, Record {
-  @Field var color: Color?
+  @Field var content: ShapeStyleValue?
   @Field var style: StrokeStyleConfig?
   @Field var antialiased: Bool = true
   @Field var shape: ShapeType = .rectangle
@@ -451,8 +453,8 @@ internal struct StrokeBorderModifier: ViewModifier, Record {
 
   @ViewBuilder
   private func applyStrokeBorder<S: InsettableShape>(_ shape: S, _ strokeStyle: StrokeStyle) -> some View {
-    if let color {
-      shape.strokeBorder(color, style: strokeStyle, antialiased: antialiased)
+    if let shapeStyle = content?.toAnyShapeStyle() {
+      shape.strokeBorder(shapeStyle, style: strokeStyle, antialiased: antialiased)
     } else {
       shape.strokeBorder(style: strokeStyle, antialiased: antialiased)
     }
