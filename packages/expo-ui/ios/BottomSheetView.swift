@@ -83,11 +83,7 @@ struct BottomSheetView: ExpoSwiftUI.View {
         content: contentChildren(),
         onSizeChange: handleSizeChange
       )
-      if #available(iOS 16.0, tvOS 16.0, *) {
-        content.presentationDetents(childrenSize.height > 0 ? [.height(childrenSize.height)] : [.medium])
-      } else {
-        content
-      }
+      content.presentationDetents(childrenSize.height > 0 ? [.height(childrenSize.height)] : [.medium])
     } else {
       contentChildren()
     }

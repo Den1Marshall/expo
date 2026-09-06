@@ -7,17 +7,11 @@ struct ContextMenuWithPreview<ActivationElement: View, Preview: View, MenuConten
   let menuContent: MenuContent
 
   var body: some View {
-    if #available(iOS 16.0, tvOS 16.0, *) {
-      activationElement.contextMenu(menuItems: {
-        menuContent
-      }, preview: {
-        preview
-      })
-    } else {
-      activationElement.contextMenu(menuItems: {
-        menuContent
-      })
-    }
+    activationElement.contextMenu(menuItems: {
+      menuContent
+    }, preview: {
+      preview
+    })
   }
 }
 

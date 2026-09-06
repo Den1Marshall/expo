@@ -193,52 +193,50 @@ public struct ChartView: ExpoSwiftUI.View {
   }
 
   public var body: some View {
-    if #available(iOS 16.0, tvOS 16.0, *) {
-      let hasIndividualColors = props.data.contains { $0.color != nil }
+    let hasIndividualColors = props.data.contains { $0.color != nil }
 
-      Chart {
-        ForEach(Array(props.data.enumerated()), id: \.offset) { index, dataPoint in
-          switch props.type {
-          case .line:
-            createLineMark(for: dataPoint)
-          case .point:
-            createPointMark(for: dataPoint)
-          case .bar:
-            if hasIndividualColors {
-              createBaseBarMark(for: dataPoint).foregroundStyle(dataPoint.color ?? .blue).cornerRadius(CGFloat(props.barStyle?.cornerRadius ?? 0.0))
-            } else {
-              createBaseBarMark(for: dataPoint).foregroundStyle(by: .value("Category", dataPoint.xValue)).cornerRadius(CGFloat(props.barStyle?.cornerRadius ?? 0.0))
-            }
-          case .area:
-            createAreaMark(for: dataPoint)
-          case .pie:
-            if #available(iOS 17.0, tvOS 17.0, *) {
-              if hasIndividualColors {
-                createBasePieMark(for: dataPoint).foregroundStyle(dataPoint.color ?? .blue).opacity(0.8)
-              } else {
-                createBasePieMark(for: dataPoint).foregroundStyle(by: .value("Category", dataPoint.xValue)).opacity(0.8)
-              }
-            }
-          case .rectangle:
-            createRectangleMark(for: dataPoint)
+    Chart {
+      ForEach(Array(props.data.enumerated()), id: \.offset) { index, dataPoint in
+        switch props.type {
+        case .line:
+          createLineMark(for: dataPoint)
+        case .point:
+          createPointMark(for: dataPoint)
+        case .bar:
+          if hasIndividualColors {
+            createBaseBarMark(for: dataPoint).foregroundStyle(dataPoint.color ?? .blue).cornerRadius(CGFloat(props.barStyle?.cornerRadius ?? 0.0))
+          } else {
+            createBaseBarMark(for: dataPoint).foregroundStyle(by: .value("Category", dataPoint.xValue)).cornerRadius(CGFloat(props.barStyle?.cornerRadius ?? 0.0))
           }
+        case .area:
+          createAreaMark(for: dataPoint)
+        case .pie:
+          if #available(iOS 17.0, tvOS 17.0, *) {
+            if hasIndividualColors {
+              createBasePieMark(for: dataPoint).foregroundStyle(dataPoint.color ?? .blue).opacity(0.8)
+            } else {
+              createBasePieMark(for: dataPoint).foregroundStyle(by: .value("Category", dataPoint.xValue)).opacity(0.8)
+            }
+          }
+        case .rectangle:
+          createRectangleMark(for: dataPoint)
         }
+      }
 
-        ForEach(props.referenceLines, id: \.xValue) { referenceLine in
-          createRuleMark(for: referenceLine)
-        }
+      ForEach(props.referenceLines, id: \.xValue) { referenceLine in
+        createRuleMark(for: referenceLine)
       }
-      .chartXAxis(props.showGrid ? .visible : .hidden)
-      .chartYAxis(props.showGrid ? .visible : .hidden)
-      .if(props.animate) { chart in
-        chart.animation(.easeInOut, value: props.data.count)
-      }
-      .if(props.showLegend) { chart in
-        chart.chartLegend(position: .automatic, spacing: 16)
-      }
-      .if(!props.showLegend) { chart in
-        chart.chartLegend(.hidden)
-      }
+    }
+    .chartXAxis(props.showGrid ? .visible : .hidden)
+    .chartYAxis(props.showGrid ? .visible : .hidden)
+    .if(props.animate) { chart in
+      chart.animation(.easeInOut, value: props.data.count)
+    }
+    .if(props.showLegend) { chart in
+      chart.chartLegend(position: .automatic, spacing: 16)
+    }
+    .if(!props.showLegend) { chart in
+      chart.chartLegend(.hidden)
     }
   }
 

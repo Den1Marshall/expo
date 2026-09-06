@@ -45,8 +45,7 @@ public struct TextView: ExpoSwiftUI.View {
   internal func buildText(applyModifiers: Bool = true) -> Text {
     let text: Text
 
-    if #available(iOS 16.0, tvOS 16.0, *),
-       let timerInterval = props.timerInterval,
+    if let timerInterval = props.timerInterval,
        let lower = timerInterval.lower,
        let upper = timerInterval.upper,
        lower <= upper {

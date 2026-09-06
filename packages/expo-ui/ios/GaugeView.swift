@@ -18,9 +18,7 @@ public struct GaugeView: ExpoSwiftUI.View {
 
   public var body: some View {
 #if !os(tvOS)
-    if #available(iOS 16.0, *) {
-      gaugeContent
-    }
+    gaugeContent
 #else
     EmptyView()
 #endif

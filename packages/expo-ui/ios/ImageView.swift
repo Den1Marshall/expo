@@ -21,16 +21,10 @@ public struct ImageView: ExpoSwiftUI.View {
 
   private var symbolImage: Image? {
     if let systemName = props.systemName {
-      if #available(iOS 16.0, tvOS 16.0, *) {
-        return Image(systemName: systemName, variableValue: props.variableValue)
-      }
-      return Image(systemName: systemName)
+      return Image(systemName: systemName, variableValue: props.variableValue)
     }
     if let assetName = props.assetName {
-      if #available(iOS 16.0, tvOS 16.0, *) {
-        return Image(assetName, variableValue: props.variableValue)
-      }
-      return Image(assetName)
+      return Image(assetName, variableValue: props.variableValue)
     }
     return nil
   }

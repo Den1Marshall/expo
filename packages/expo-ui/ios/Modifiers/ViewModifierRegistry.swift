@@ -210,17 +210,13 @@ internal struct LuminanceToAlphaModifier: ViewModifier, Record {
 
 internal struct BoldModifier: ViewModifier, Record {
   func body(content: Content) -> some View {
-    if #available(iOS 16.0, tvOS 16.0, *) {
-      content.bold()
-    }
+    content.bold()
   }
 }
 
 internal struct ItalicModifier: ViewModifier, Record {
   func body(content: Content) -> some View {
-    if #available(iOS 16.0, tvOS 16.0, *) {
-      content.italic()
-    }
+    content.italic()
   }
 }
 
@@ -470,10 +466,8 @@ internal struct OnTapGestureModifier: ViewModifier, Record {
   }
 
   func body(content: Content) -> some View {
-    if #available(iOS 15.0, tvOS 16.0, *) {
-      content.onTapGesture {
-        eventDispatcher?(["onTapGesture": [:]])
-      }
+    content.onTapGesture {
+      eventDispatcher?(["onTapGesture": [:]])
     }
   }
 }
@@ -549,19 +543,15 @@ internal struct ScrollDismissesKeyboardModifier: ViewModifier, Record {
   @Field var mode: ScrollDismissesKeyboardMode = .automatic
 
   func body(content: Content) -> some View {
-    if #available(iOS 16.0, macOS 13.0, tvOS 16.0, *) {
-      switch mode {
-      case .interactively:
-        content.scrollDismissesKeyboard(.interactively)
-      case .immediately:
-        content.scrollDismissesKeyboard(.immediately)
-      case .never:
-        content.scrollDismissesKeyboard(.never)
-      case .automatic:
-        content.scrollDismissesKeyboard(.automatic)
-      }
-    } else {
-      content
+    switch mode {
+    case .interactively:
+      content.scrollDismissesKeyboard(.interactively)
+    case .immediately:
+      content.scrollDismissesKeyboard(.immediately)
+    case .never:
+      content.scrollDismissesKeyboard(.never)
+    case .automatic:
+      content.scrollDismissesKeyboard(.automatic)
     }
   }
 }
@@ -959,17 +949,13 @@ internal struct ScrollContentBackground: ViewModifier, Record {
 #if os(tvOS)
     content
 #else
-    if #available(iOS 16.0, *) {
-      switch visible {
-      case .visible:
-        content.scrollContentBackground(.visible)
-      case .hidden:
-        content.scrollContentBackground(.hidden)
-      case .automatic:
-        content.scrollContentBackground(.automatic)
-      }
-    } else {
-      content
+    switch visible {
+    case .visible:
+      content.scrollContentBackground(.visible)
+    case .hidden:
+      content.scrollContentBackground(.hidden)
+    case .automatic:
+      content.scrollContentBackground(.automatic)
     }
 #endif
   }
@@ -1043,11 +1029,7 @@ internal struct ListRowSpacing: ViewModifier, Record {
 
   func body(content: Content) -> some View {
 #if os(iOS)
-    if #available(iOS 15.0, *) {
-      content.listRowSpacing(spacing.map { CGFloat($0) })
-    } else {
-      content
-    }
+    content.listRowSpacing(spacing.map { CGFloat($0) })
 #else
     content
 #endif
@@ -1123,11 +1105,7 @@ internal struct TextKerning: ViewModifier, Record {
   @Field var value: CGFloat = 0
 
   func body(content: Content) -> some View {
-    if #available(iOS 16.0, macOS 13.0, tvOS 16.0, *) {
-      content.kerning(value)
-    } else {
-      content
-    }
+    content.kerning(value)
   }
 }
 
@@ -1135,11 +1113,7 @@ internal struct TextAllowsTightening: ViewModifier, Record {
   @Field var value: Bool = true
 
   func body(content: Content) -> some View {
-    if #available(iOS 13.0, macOS 10.15, tvOS 16.0, *) {
-      content.allowsTightening(value)
-    } else {
-      content
-    }
+    content.allowsTightening(value)
   }
 }
 
@@ -1183,21 +1157,17 @@ internal struct TextUnderLine: ViewModifier, Record {
   @Field var color: Color?
 
   func body(content: Content) -> some View {
-    if #available(iOS 16.0, macOS 13.0, tvOS 16.0, *) {
-      switch pattern {
-      case .solid:
-        content.underline(isActive, pattern: .solid, color: color)
-      case .dash:
-        content.underline(isActive, pattern: .dash, color: color)
-      case .dot:
-        content.underline(isActive, pattern: .dot, color: color)
-      case .dashDot:
-        content.underline(isActive, pattern: .dashDot, color: color)
-      case .dashDotDot:
-        content.underline(isActive, pattern: .dashDotDot, color: color)
-      }
-    } else {
-      content
+    switch pattern {
+    case .solid:
+      content.underline(isActive, pattern: .solid, color: color)
+    case .dash:
+      content.underline(isActive, pattern: .dash, color: color)
+    case .dot:
+      content.underline(isActive, pattern: .dot, color: color)
+    case .dashDot:
+      content.underline(isActive, pattern: .dashDot, color: color)
+    case .dashDotDot:
+      content.underline(isActive, pattern: .dashDotDot, color: color)
     }
   }
 }
@@ -1208,21 +1178,17 @@ internal struct TextStrikeThrough: ViewModifier, Record {
   @Field var color: Color?
 
   func body(content: Content) -> some View {
-    if #available(iOS 16.0, macOS 13.0, tvOS 16.0, *) {
-      switch pattern {
-      case .solid:
-        content.strikethrough(isActive, pattern: .solid, color: color)
-      case .dash:
-        content.strikethrough(isActive, pattern: .dash, color: color)
-      case .dot:
-        content.strikethrough(isActive, pattern: .dot, color: color)
-      case .dashDot:
-        content.strikethrough(isActive, pattern: .dashDot, color: color)
-      case .dashDotDot:
-        content.strikethrough(isActive, pattern: .dashDotDot, color: color)
-      }
-    } else {
-      content
+    switch pattern {
+    case .solid:
+      content.strikethrough(isActive, pattern: .solid, color: color)
+    case .dash:
+      content.strikethrough(isActive, pattern: .dash, color: color)
+    case .dot:
+      content.strikethrough(isActive, pattern: .dot, color: color)
+    case .dashDot:
+      content.strikethrough(isActive, pattern: .dashDot, color: color)
+    case .dashDotDot:
+      content.strikethrough(isActive, pattern: .dashDotDot, color: color)
     }
   }
 }
@@ -1405,12 +1371,8 @@ internal struct GridCellUnsizedAxes: ViewModifier, Record {
   @Field var axes: AxisOptions?
 
   func body(content: Content) -> some View {
-    if #available(iOS 16.0, macOS 13.0, tvOS 16.0, *) {
-      if let axes {
-        content.gridCellUnsizedAxes(axes.toAxis())
-      } else {
-        content
-      }
+    if let axes {
+      content.gridCellUnsizedAxes(axes.toAxis())
     } else {
       content
     }
@@ -1421,12 +1383,8 @@ internal struct GridCellColumns: ViewModifier, Record {
   @Field var count: Int?
 
   func body(content: Content) -> some View {
-    if #available(iOS 16.0, macOS 13.0, tvOS 16.0, *) {
-      if let count {
-        content.gridCellColumns(count)
-      } else {
-        content
-      }
+    if let count {
+      content.gridCellColumns(count)
     } else {
       content
     }
@@ -1451,12 +1409,8 @@ internal struct GridColumnAlignment: ViewModifier, Record {
   @Field var alignment: GridColumnAlignmentType?
 
   func body(content: Content) -> some View {
-    if #available(iOS 16.0, macOS 13.0, tvOS 16.0, *) {
-      if let alignment {
-        content.gridColumnAlignment(alignment.alignment)
-      } else {
-        content
-      }
+    if let alignment {
+      content.gridColumnAlignment(alignment.alignment)
     } else {
       content
     }
@@ -1497,14 +1451,10 @@ internal struct GridCellAnchor: ViewModifier, Record {
   @Field var anchor: UnitPointOptions?
 
   func body(content: Content) -> some View {
-    if #available(iOS 16.0, macOS 13.0, tvOS 16.0, *) {
-      if let points {
-        content.gridCellAnchor(points)
-      } else if type == "preset", let anchor {
-        content.gridCellAnchor(anchor.toUnitPoint)
-      } else {
-        content
-      }
+    if let points {
+      content.gridCellAnchor(points)
+    } else if type == "preset", let anchor {
+      content.gridCellAnchor(anchor.toUnitPoint)
     } else {
       content
     }

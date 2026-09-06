@@ -24,11 +24,7 @@ internal enum PickerStyleType: String, Enumerable {
         content.pickerStyle(.automatic)
       }
     case .navigationLink:
-      if #available(iOS 16.0, tvOS 16.0, *) {
-        content.pickerStyle(.navigationLink)
-      } else {
-        content.pickerStyle(.automatic)
-      }
+      content.pickerStyle(.navigationLink)
     case .palette:
 #if !os(tvOS)
       if #available(iOS 17.0, *) {

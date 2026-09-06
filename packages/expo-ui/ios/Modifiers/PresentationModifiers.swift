@@ -66,16 +66,12 @@ internal struct PresentationDetentsModifier: ViewModifier, Record {
   }
 
   func body(content: Content) -> some View {
-    if #available(iOS 16.0, tvOS 16.0, *) {
-      PresentationDetentsSelectionView(
-        detents: parseDetents(),
-        rawDetents: detents ?? [],
-        initialSelection: selection.flatMap { parsePresentationDetent($0) },
-        eventDispatcher: eventDispatcher
-      ) {
-        content
-      }
-    } else {
+    PresentationDetentsSelectionView(
+      detents: parseDetents(),
+      rawDetents: detents ?? [],
+      initialSelection: selection.flatMap { parsePresentationDetent($0) },
+      eventDispatcher: eventDispatcher
+    ) {
       content
     }
   }
@@ -152,11 +148,7 @@ internal struct PresentationDragIndicatorModifier: ViewModifier, Record {
   @Field var visibility: VisibilityOptions = .automatic
 
   func body(content: Content) -> some View {
-    if #available(iOS 16.0, tvOS 16.0, *) {
-      content.presentationDragIndicator(visibility.toVisibility())
-    } else {
-      content
-    }
+    content.presentationDragIndicator(visibility.toVisibility())
   }
 }
 
@@ -174,23 +166,19 @@ internal struct PresentationBackgroundInteractionModifier: ViewModifier, Record 
   @Field var detent: Either<PresentationDetentPreset, PresentationDetentItem>?
 
   func body(content: Content) -> some View {
-    if #available(iOS 16.4, tvOS 16.4, *) {
-      switch interactionType {
-      case .automatic:
-        content.presentationBackgroundInteraction(.automatic)
-      case .enabled:
+    switch interactionType {
+    case .automatic:
+      content.presentationBackgroundInteraction(.automatic)
+    case .enabled:
+      content.presentationBackgroundInteraction(.enabled)
+    case .disabled:
+      content.presentationBackgroundInteraction(.disabled)
+    case .enabledUpThrough:
+      if let detent, let parsed = parsePresentationDetent(detent) {
+        content.presentationBackgroundInteraction(.enabled(upThrough: parsed))
+      } else {
         content.presentationBackgroundInteraction(.enabled)
-      case .disabled:
-        content.presentationBackgroundInteraction(.disabled)
-      case .enabledUpThrough:
-        if let detent, let parsed = parsePresentationDetent(detent) {
-          content.presentationBackgroundInteraction(.enabled(upThrough: parsed))
-        } else {
-          content.presentationBackgroundInteraction(.enabled)
-        }
       }
-    } else {
-      content
     }
   }
 }

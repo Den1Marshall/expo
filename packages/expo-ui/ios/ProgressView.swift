@@ -25,8 +25,7 @@ public struct ProgressView: ExpoSwiftUI.View {
     if let timerInterval = props.timerInterval,
       let lower = timerInterval.lower,
       let upper = timerInterval.upper,
-      lower <= upper,
-      #available(iOS 16.0, tvOS 16.0, *) {
+      lower <= upper {
       SwiftUI.ProgressView(timerInterval: ClosedRange(uncheckedBounds: (lower: lower, upper: upper)), countsDown: props.countsDown ?? true) {
         Children()
       }

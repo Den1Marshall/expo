@@ -18,15 +18,11 @@ public struct UnevenRoundedRectangleView: ExpoSwiftUI.View {
   }
 
   public var body: some View {
-    if #available(iOS 16.0, tvOS 16.0, *) {
-      UnevenRoundedRectangle(
-        topLeadingRadius: props.topLeadingRadius,
-        bottomLeadingRadius: props.bottomLeadingRadius,
-        bottomTrailingRadius: props.bottomTrailingRadius,
-        topTrailingRadius: props.topTrailingRadius
-      )
-    } else {
-      EmptyView()
-    }
+    UnevenRoundedRectangle(
+      topLeadingRadius: props.topLeadingRadius,
+      bottomLeadingRadius: props.bottomLeadingRadius,
+      bottomTrailingRadius: props.bottomTrailingRadius,
+      topTrailingRadius: props.topTrailingRadius
+    )
   }
 }

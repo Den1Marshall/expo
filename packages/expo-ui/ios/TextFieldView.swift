@@ -144,22 +144,13 @@ private struct StatefulTextField: View {
 
   @ViewBuilder
   var textField: some View {
-    if #available(iOS 16.0, tvOS 16.0, *) {
-      TextField(
-        promptText == nil ? props.placeholder : "",
-        text: textBinding,
-        prompt: promptText,
-        axis: swiftUIAxis
-      )
-      .focused($isFocused)
-    } else {
-      TextField(
-        promptText == nil ? props.placeholder : "",
-        text: textBinding,
-        prompt: promptText
-      )
-      .focused($isFocused)
-    }
+    TextField(
+      promptText == nil ? props.placeholder : "",
+      text: textBinding,
+      prompt: promptText,
+      axis: swiftUIAxis
+    )
+    .focused($isFocused)
   }
 
   var body: some View {

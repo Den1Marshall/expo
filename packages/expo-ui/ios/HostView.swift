@@ -57,43 +57,25 @@ struct HostView: ExpoSwiftUI.View, ExpoSwiftUI.WithHostingView {
     let fillHorizontal = !props.useViewportSizeMeasurement && !props.matchContentsHorizontal
     let fillVertical = !props.useViewportSizeMeasurement && !props.matchContentsVertical
 
-    if #available(iOS 16.0, tvOS 16.0, macOS 13.0, *) {
-      // swiftlint:disable:next identifier_name
-      let HostLayout = props.useViewportSizeMeasurement
-        ? AnyLayout(ViewportSizeMeasurementLayout(layoutDirection: layoutDirection))
-        : AnyLayout(ZStackLayout(alignment: alignment))
-      HostLayout {
-        Children()
-      }
-      .fixedSize(horizontal: props.matchContentsHorizontal, vertical: props.matchContentsVertical)
-      .modifier(LayoutDirectionModifier(layoutDirection: layoutDirection))
-      .modifier(ColorSchemeModifier(colorScheme: props.colorScheme?.toColorScheme()))
-      .modifier(SeedColorModifier(seedColor: props.seedColor))
-      .applyModifiers(
-        props.modifiers,
-        appContext: props.appContext,
-        globalEventDispatcher: props.globalEventDispatcher
-      )
-      .modifier(GeometryChangeModifier(props: props))
-      .modifier(FillAlignmentModifier(alignment: alignment, fillHorizontal: fillHorizontal, fillVertical: fillVertical))
-      .coordinateSpace(name: expoHostCoordinateSpace)
-    } else {
-      ZStack(alignment: alignment) {
-        Children()
-      }
-      .fixedSize(horizontal: props.matchContentsHorizontal, vertical: props.matchContentsVertical)
-      .modifier(LayoutDirectionModifier(layoutDirection: layoutDirection))
-      .modifier(ColorSchemeModifier(colorScheme: props.colorScheme?.toColorScheme()))
-      .modifier(SeedColorModifier(seedColor: props.seedColor))
-      .applyModifiers(
-        props.modifiers,
-        appContext: props.appContext,
-        globalEventDispatcher: props.globalEventDispatcher
-      )
-      .modifier(GeometryChangeModifier(props: props))
-      .modifier(FillAlignmentModifier(alignment: alignment, fillHorizontal: fillHorizontal, fillVertical: fillVertical))
-      .coordinateSpace(name: expoHostCoordinateSpace)
+    // swiftlint:disable:next identifier_name
+    let HostLayout = props.useViewportSizeMeasurement
+      ? AnyLayout(ViewportSizeMeasurementLayout(layoutDirection: layoutDirection))
+      : AnyLayout(ZStackLayout(alignment: alignment))
+    HostLayout {
+      Children()
     }
+    .fixedSize(horizontal: props.matchContentsHorizontal, vertical: props.matchContentsVertical)
+    .modifier(LayoutDirectionModifier(layoutDirection: layoutDirection))
+    .modifier(ColorSchemeModifier(colorScheme: props.colorScheme?.toColorScheme()))
+    .modifier(SeedColorModifier(seedColor: props.seedColor))
+    .applyModifiers(
+      props.modifiers,
+      appContext: props.appContext,
+      globalEventDispatcher: props.globalEventDispatcher
+    )
+    .modifier(GeometryChangeModifier(props: props))
+    .modifier(FillAlignmentModifier(alignment: alignment, fillHorizontal: fillHorizontal, fillVertical: fillVertical))
+    .coordinateSpace(name: expoHostCoordinateSpace)
   }
 
 }
@@ -165,22 +147,9 @@ private struct GeometryChangeModifier: ViewModifier {
   }
 
   func body(content: Content) -> some View {
-    if #available(iOS 16.0, tvOS 16.0, macOS 13.0, *) {
-      content.onGeometryChange(for: CGSize.self, of: { proxy in proxy.size }, action: {
-        dispatchOnLayoutContent($0)
-      })
-    } else {
-      content.overlay {
-        GeometryReader { geometry in
-          Color.clear
-            .hidden()
-            .onAppear {
-              dispatchOnLayoutContent(geometry.size)
-            }
-            .onChange(of: geometry.size) { dispatchOnLayoutContent($0) }
-        }
-      }
-    }
+    content.onGeometryChange(for: CGSize.self, of: { proxy in proxy.size }, action: {
+      dispatchOnLayoutContent($0)
+    })
   }
 }
 

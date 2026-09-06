@@ -36,12 +36,8 @@ internal struct GaugeStyleModifier: ViewModifier, Record {
   @ViewBuilder
   func body(content: Content) -> some View {
 #if !os(tvOS)
-    if #available(iOS 16.0, *) {
-      if let style = style {
-        style.apply(to: content)
-      } else {
-        content
-      }
+    if let style = style {
+      style.apply(to: content)
     } else {
       content
     }

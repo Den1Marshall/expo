@@ -11,17 +11,15 @@ internal struct LabeledContentView: ExpoSwiftUI.View {
   @ObservedObject var props: LabeledContentProps
 
   var body: some View {
-    if #available(iOS 16.0, tvOS 16.0, *) {
-      if hasCustomLabel {
-        LabeledContent {
-          contentChildren
-        } label: {
-          customLabelContent
-        }
-      } else {
-        LabeledContent(props.label ?? "") {
-          contentChildren
-        }
+    if hasCustomLabel {
+      LabeledContent {
+        contentChildren
+      } label: {
+        customLabelContent
+      }
+    } else {
+      LabeledContent(props.label ?? "") {
+        contentChildren
       }
     }
   }

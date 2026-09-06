@@ -15,11 +15,7 @@ public struct AccessoryWidgetBackgroundView: ExpoSwiftUI.View {
 
   public var body: some View {
 #if !os(tvOS)
-    if #available(iOS 16.0, *) {
-      AccessoryWidgetBackground()
-    } else {
-      Color.clear
-    }
+    AccessoryWidgetBackground()
 #else
     EmptyView()
 #endif

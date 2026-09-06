@@ -15,20 +15,16 @@ internal struct ContentTransitionModifier: ViewModifier, Record {
   @Field var countsDown: Bool = false
 
   func body(content: Content) -> some View {
-    if #available(iOS 16.0, tvOS 16.0, macOS 13.0, *) {
-      switch transitionType {
-      case .numericText:
-        content.contentTransition(.numericText(countsDown: countsDown))
-      case .identity:
-        content.contentTransition(.identity)
-      case .opacity:
-        content.contentTransition(.opacity)
-      case .interpolate:
-        content.contentTransition(.interpolate)
-      default:
-        content
-      }
-    } else {
+    switch transitionType {
+    case .numericText:
+      content.contentTransition(.numericText(countsDown: countsDown))
+    case .identity:
+      content.contentTransition(.identity)
+    case .opacity:
+      content.contentTransition(.opacity)
+    case .interpolate:
+      content.contentTransition(.interpolate)
+    default:
       content
     }
   }

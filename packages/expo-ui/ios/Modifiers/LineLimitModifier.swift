@@ -11,17 +11,9 @@ internal struct LineLimitModifier: ViewModifier, Record {
 
   func body(content: Content) -> some View {
     if let min, let max {
-      if #available(iOS 16.0, tvOS 16.0, *) {
-        content.lineLimit(min...max)
-      } else {
-        content.lineLimit(max)
-      }
+      content.lineLimit(min...max)
     } else if let reservesSpace, let limit {
-      if #available(iOS 16.0, tvOS 16.0, *) {
-        content.lineLimit(limit, reservesSpace: reservesSpace)
-      } else {
-        content.lineLimit(limit)
-      }
+      content.lineLimit(limit, reservesSpace: reservesSpace)
     } else {
       content.lineLimit(limit)
     }

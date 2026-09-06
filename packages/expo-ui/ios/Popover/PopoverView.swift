@@ -17,12 +17,8 @@ internal struct PopoverView: ExpoSwiftUI.View {
         attachmentAnchor: props.attachmentAnchor?.anchor ?? .rect(.bounds),
         arrowEdge: props.arrowEdge?.edge
       ) {
-        if #available(iOS 16.4, *) {
-          popoverContent
-            .presentationCompactAdaptation(.popover)
-        } else {
-          popoverContent
-        }
+        popoverContent
+          .presentationCompactAdaptation(.popover)
       }
       .onChange(
         of: isPresented,
